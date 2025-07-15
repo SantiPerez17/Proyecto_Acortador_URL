@@ -1,8 +1,14 @@
 import { useState } from "react";
 
+interface Resultado {
+    hora: string;
+    fecha: string;
+    codigo: string;
+    urlOriginal: string;
+}
 export const GenerateUrl = () => {
   const [inputUrl, setInputUrl] = useState('');
-  const [resultado, setResultado] = useState(null);
+  const [resultado, setResultado] = useState<Resultado | null>(null);
 
   const obtenerFecha = () => {
     const hoy = new Date();

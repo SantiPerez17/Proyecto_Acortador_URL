@@ -1,6 +1,6 @@
-import { createBrowserRouter, Route, Routes } from 'react-router-dom'
-import { Home } from '../Components/Home'
+import { createBrowserRouter } from 'react-router-dom';
 import { GenerateUrl } from '../Components/GenerateUrl';
+import { Home } from '../Components/Home';
 
 const router = createBrowserRouter([
     {
