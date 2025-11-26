@@ -51,7 +51,7 @@ export const GenerateUrl = () => {
     };
 
     try {
-      const res = await fetch('http://localhost:3001/links', {
+      const res = await fetch('https://json-server-shortcut-url.onrender.com/links', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

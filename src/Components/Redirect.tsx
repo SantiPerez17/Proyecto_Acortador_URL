@@ -13,7 +13,7 @@ export default function Redirect() {
         const fetchLink = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3001/links?code=${codePath}`
+                    `https://json-server-shortcut-url.onrender.com/links?code=${codePath}`
                 );
                 const data = await response.json();
 
