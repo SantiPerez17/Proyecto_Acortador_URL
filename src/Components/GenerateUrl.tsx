@@ -1,57 +1,95 @@
-import { useState } from "react";
+import { useState, type ReactElement } from "react";
 
-interface Resultado {
-    hora: string;
-    fecha: string;
-    codigo: string;
-    urlOriginal: string;
+interface Result {
+    time: string;
+    date: string;
+    code: string;
+    originalUrl: string;
+    shortUrl?: string;
 }
+
 export const GenerateUrl = () => {
   const [inputUrl, setInputUrl] = useState('');
-  const [resultado, setResultado] = useState<Resultado | null>(null);
+  const [result, setResult] = useState<Result | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const obtenerFecha = () => {
-    const hoy = new Date();
-    return hoy.toISOString().split('T')[0]; // yyyy-mm-dd
+  const getDate = () => {
+    const now = new Date();
+    return now.toISOString().split('T')[0]; // yyyy-mm-dd
   };
 
-  const obtenerHora = () => {
-    const ahora = new Date();
-    return ahora.toTimeString().split(' ')[0].slice(0, 5); // hh:mm
+  const getTime = () => {
+    const now = new Date();
+    return now.toTimeString().split(' ')[0].slice(0, 5); // hh:mm
   };
 
-  const generarCodigoUnico = () => {
-    return Math.random().toString(36).substr(2, 9);
+  const generateUniqueCode = (length = 6) => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let out = '';
+    for (let i = 0; i < length; i++) out += chars.charAt(Math.floor(Math.random() * chars.length));
+    return out;
   };
 
-  const handleGenerar = () => {
+  const handleGenerate = async (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
     if (!inputUrl.trim()) {
-      alert('Por favor ingresá una URL');
+      setError('Please enter a URL');
       return;
     }
 
-    const nuevoObjeto = {
-      hora: obtenerHora(),
-      fecha: obtenerFecha(),
-      codigo: generarCodigoUnico(),
-      urlOriginal: inputUrl.trim()
+    setLoading(true);
+
+    const code = generateUniqueCode();
+    const payload = {
+      code,
+      url: inputUrl.trim(),
+      createat: new Date().toISOString(),
+      usercreate: 'anonymous'
     };
 
-    console.log('Objeto generado:', nuevoObjeto);
-    setResultado(nuevoObjeto);
+    try {
+      const res = await fetch('http://localhost:3001/links', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
+
+      const created = await res.json();
+
+      const shortUrl = `${window.location.origin}/${created.code || code}`;
+
+      const newResult: Result = {
+        time: getTime(),
+        date: getDate(),
+        code: created.code || code,
+        originalUrl: created.url || inputUrl.trim(),
+        shortUrl,
+      };
+
+      setResult(newResult);
+      setInputUrl('');
+    } catch (err: any) {
+      setError(err.message || 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div style={{ display: 'grid', justifyContent: 'center', alignItems: 'start', height: '75vh' }}>
+      <form onSubmit={handleGenerate} style={{ marginBottom: '1rem' }}>
       <section style={{ display: 'grid', width: '100%', gap: '16px' }}>
-        <label>URL Original</label>
+        <label>Original URL</label>
         <input
           style={{
             width: '100%',
-            height: '40px',
             background: '#333',
             color: 'white',
-            padding: '10px',
             borderRadius: '5px',
             border: 'none',
             outline: 'none',
@@ -60,16 +98,34 @@ export const GenerateUrl = () => {
           type="text"
           value={inputUrl}
           onChange={(e) => setInputUrl(e.target.value)}
-          placeholder="ej: turnos, contacto, etc."
+          placeholder="e.g.: https://example.com/page"
         />
-        <button onClick={handleGenerar}>Generar Objeto</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Generating...' : 'Generate Short URL'}
+        </button>
+        <button disabled={!result || inputUrl==''} onClick={(e)=>{
+          e.preventDefault()
+          setInputUrl('')
+          setResult(null)
+        }}>
+          {loading ? 'Resetting...' : 'Reset'}
+        </button>
 
-        {resultado && (
-          <pre style={{ background: '#222', color: '#0f0', padding: '1rem', borderRadius: '5px' }}>
-            {JSON.stringify(resultado, null, 2)}
-          </pre>
+        {error && <div style={{ color: 'tomato' }}>{error}</div>}
+
+        {result && (
+          <div style={{ background: '#222', color: '#0f0', padding: '1rem', borderRadius: '5px' }}>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+            <div style={{ marginTop: '8px' }}>
+              Short URL:&nbsp;
+              <a href={result.shortUrl} target="_blank" rel="noreferrer" style={{ color: '#8fd' }}>
+                {result.shortUrl}
+              </a>
+            </div>
+          </div>
         )}
       </section>
+        </form>
     </div>
   );
 };
