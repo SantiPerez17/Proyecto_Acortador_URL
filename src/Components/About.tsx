@@ -5,17 +5,15 @@ export const About = () => {
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto' }}>
-      {/* Header */}
-      <section style={{ marginBottom: 48, textAlign: 'center' }}>
+      <section style={{ marginBottom: 48, textAlign: 'center', display:'grid' }}>
         <h1 style={{ fontSize: '2.5rem', margin: '0 0 16px 0', color: 'var(--text-primary)' }}>
           🔗 Acortador de URL
         </h1>
-        <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', margin: 0 }}>
+        <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', margin: 2 }}>
           La forma más simple y rápida de crear URLs cortas
         </p>
       </section>
 
-      {/* Descripción */}
       <section className="card" style={{ marginBottom: 32 }}>
         <h2 style={{ margin: '0 0 12px 0', fontSize: '1.25rem' }}>¿Qué es?</h2>
         <p style={{ margin: 0, lineHeight: 1.8, color: 'var(--text-secondary)' }}>
@@ -25,7 +23,6 @@ export const About = () => {
         </p>
       </section>
 
-      {/* Características */}
       <section className="card" style={{ marginBottom: 32 }}>
         <h2 style={{ margin: '0 0 16px 0', fontSize: '1.25rem' }}>✨ Características</h2>
         <ul style={{ margin: 0, paddingLeft: 20, color: 'var(--text-secondary)' }}>
@@ -50,7 +47,6 @@ export const About = () => {
         </ul>
       </section>
 
-      {/* Cómo usar */}
       <section className="card" style={{ marginBottom: 32 }}>
         <h2 style={{ margin: '0 0 16px 0', fontSize: '1.25rem' }}>🚀 Cómo Usar</h2>
         <div style={{ display: 'grid', gap: 16, color: 'var(--text-secondary)' }}>
@@ -74,7 +70,6 @@ export const About = () => {
         </div>
       </section>
 
-      {/* Casos de uso */}
       <section className="card" style={{ marginBottom: 32 }}>
         <h2 style={{ margin: '0 0 16px 0', fontSize: '1.25rem' }}>💡 Casos de Uso</h2>
         <ul style={{ margin: 0, paddingLeft: 20, color: 'var(--text-secondary)' }}>
@@ -87,7 +82,6 @@ export const About = () => {
         </ul>
       </section>
 
-      {/* Tecnología */}
       <section className="card" style={{ marginBottom: 32 }}>
         <h2 style={{ margin: '0 0 12px 0', fontSize: '1.25rem' }}>⚡ Tecnología</h2>
         <p style={{ margin: '0 0 12px 0', lineHeight: 1.8, color: 'var(--text-secondary)' }}>
@@ -113,7 +107,6 @@ export const About = () => {
         </div>
       </section>
 
-      {/* CTA */}
       <section style={{ textAlign: 'center', marginBottom: 32 }}>
         <button
           onClick={() => navigate('/')}
@@ -124,16 +117,7 @@ export const About = () => {
         </button>
       </section>
 
-      {/* Footer pequeño */}
-      <section style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-        <p>
-          Hecho con ❤️ para hacer la vida más simple.
-          <br />
-          <a href="https://github.com/SantiPerez17/Proyecto_Acortador_URL" style={{ color: 'var(--cyan)', textDecoration: 'none' }}>
-            Ver en GitHub
-          </a>
-        </p>
-      </section>
+      
     </div>
   );
 };
