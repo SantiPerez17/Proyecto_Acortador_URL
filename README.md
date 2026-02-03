@@ -1,6 +1,6 @@
 # 🔗 Acortador de URL - URL Shortener
 
-Una aplicación web moderna, rápida y segura para acortar URLs largas en códigos cortos y fáciles de compartir. Construida con React, TypeScript y Vite para máxima performance.
+Una aplicación web moderna y rápida para acortar URLs largas en códigos cortos y fáciles de compartir. Construida con React, TypeScript y Vite para máxima performance.
 
 ## ✨ Características Principales
 
