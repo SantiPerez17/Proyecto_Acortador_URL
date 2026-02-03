@@ -111,61 +111,52 @@ export const GenerateUrl = () => {
   };
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'start', paddingTop: 40 }}>
-      <form onSubmit={handleGenerate} aria-label="Short URL generator" style={{ width: '100%', maxWidth: 720 }}>
-        <section style={{ background: '#0b0b0b', padding: 20, borderRadius: 10, boxShadow: '0 6px 18px rgba(0,0,0,0.6)', gap: 12, display: 'grid' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#e6eef8' }}>Acortar URL</h2>
-            <small style={{ color: '#8b98a6' }}>{getDate()} {getTime()}</small>
-          </div>
+      <form onSubmit={handleGenerate} aria-label="Short URL generator" className="card" style={{ maxWidth: 720, width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#e6eef8' }}>Acortar URL</h2>
+          <small style={{ color: 'var(--text-meta)' }}>{getDate()} {getTime()}</small>
+        </div>
 
-          <label style={{ color: '#cbd5e1' }}>Original URL</label>
-          <input
-            aria-label="Original URL"
-            style={{
-              width: '100%',
-              background: '#121212',
-              color: '#e6eef8',
-              borderRadius: '8px',
-              border: '1px solid #262626',
-              outline: 'none',
-              padding: '12px 14px',
-              fontSize: '1rem'
-            }}
-            type="text"
-            value={inputUrl}
-            onChange={(e) => setInputUrl(e.target.value)}
-            placeholder="https://example.com/page"
-            disabled={loading}
-          />
+        <label>Original URL</label>
+        <input
+          aria-label="Original URL"
+          type="text"
+          value={inputUrl}
+          onChange={(e) => setInputUrl(e.target.value)}
+          placeholder="https://example.com/page"
+          disabled={loading}
+        />
 
-          <div style={{ display: 'flex', gap: 8 }}>
-            <button type="submit" disabled={loading} style={{ flex: 1, padding: '10px 12px', borderRadius: 8, background: '#06b6d4', color: '#021', border: 'none', fontWeight: 600 }}>
-              {loading ? 'Generando...' : 'Generar'}
-            </button>
-            <button type="button" disabled={loading && !result} onClick={() => { setInputUrl(''); setResult(null); setError(null); }} style={{ padding: '10px 12px', borderRadius: 8, background: '#222', color: '#cbd5e1', border: '1px solid #2b2b2b' }}>
-              Reset
-            </button>
-          </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button type="submit" className="btn btn-primary" disabled={loading} style={{ flex: 1 }}>
+            {loading ? 'Generando...' : 'Generar'}
+          </button>
+          <button type="button" className="btn btn-secondary" disabled={loading && !result} onClick={() => { setInputUrl(''); setResult(null); setError(null); }}>
+            Reset
+          </button>
+        </div>
 
-          {error && <div role="alert" style={{ color: 'tomato' }}>{error}</div>}
+        {error && <div role="alert" className="error-message">❌ {error}</div>}
 
-          {result && (
-            <div style={{ background: '#071018', color: '#e6fff3', padding: '12px', borderRadius: 8, border: '1px solid #06323a' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ fontSize: '0.95rem', color: '#9fe6d8', wordBreak: 'break-all' }}>{result.shortUrl}</div>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <a href={result.shortUrl} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: '#e6eef8', background: '#05445E', padding: '8px 10px', borderRadius: 6 }}>Abrir</a>
-                  <button type="button" onClick={() => handleCopy(result.shortUrl)} style={{ background: copied ? '#16a34a' : '#0ea5e9', color: '#021', border: 'none', padding: '8px 10px', borderRadius: 6, fontWeight: 600 }}>{copied ? 'Copiado' : 'Copiar'}</button>
-                </div>
+        {result && (
+          <div className="result-box">
+            <div className="result-url">
+              <div className="result-url-text">{result.shortUrl}</div>
+              <div className="result-actions">
+                <a href={result.shortUrl} target="_blank" rel="noreferrer">Abrir</a>
+                <button type="button" className={`btn ${copied ? 'btn-success' : 'btn-copy'}`} onClick={() => handleCopy(result.shortUrl)}>
+                  {copied ? '✓ Copiado' : 'Copiar'}
+                </button>
               </div>
-
-              <details style={{ marginTop: 10, color: '#9fb8b3' }}>
-                <summary style={{ cursor: 'pointer' }}>Detalles</summary>
-                <pre style={{ marginTop: 8, color: '#cde6dd', background: 'transparent', border: 'none', padding: 0 }}>{JSON.stringify(result, null, 2)}</pre>
-              </details>
             </div>
-          )}
-        </section>
+
+            <details className="result-details">
+              <summary>Detalles</summary>
+              <pre>{JSON.stringify(result, null, 2)}</pre>
+            </details>
+          </div>
+        )}
       </form>
     </div>
-  )};
+  );
+}

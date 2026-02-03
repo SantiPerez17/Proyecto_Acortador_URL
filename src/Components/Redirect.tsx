@@ -37,8 +37,37 @@ export default function Redirect() {
         fetchLink();
     }, [codePath]);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>This code does not exist</p>;
+    if (loading) {
+        return (
+            <div className="loading-container">
+                <div className="loading-content">
+                    <div className="loading-icon">⏳</div>
+                    <p className="loading-text">Redirigiendo...</p>
+                    <p className="loading-subtext">Por favor espera un momento</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="error-container">
+                <div className="error-box">
+                    <div className="error-icon">❌</div>
+                    <h2 className="error-title">Código no encontrado</h2>
+                    <p className="error-description">
+                        El código "{codePath}" no existe o ha expirado.
+                    </p>
+                    <button
+                        onClick={() => window.location.href = '/'}
+                        className="btn btn-primary error-button"
+                    >
+                        Volver al inicio
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return null;
 }

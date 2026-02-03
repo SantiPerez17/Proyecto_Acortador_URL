@@ -1,29 +1,58 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-const InputCode = () =>{
-    const [code, setCode] = useState('');
-    
-    const inputStyle = {
-        width: '100%',
-        height: '40px',
-        background: '#333',
-        color: 'white',
-        padding: '10px',
-        borderRadius: '5px',
-        border: 'none',
-        outline: 'none',
-        fontSize: '1.2rem'
-    }
-    const labelStyle = {
-        display: 'block',
-        marginBottom: '10px'
-    }
-    return (
-        <div>
-            <label className="label" style={labelStyle}>Code</label>
-            <input style={inputStyle} type="text" value={code} onChange={(e) => setCode(e.target.value)} />
-        </div>
-    )
+interface InputCodeProps {
+  onSubmit?: (code: string) => void;
+  placeholder?: string;
+  label?: string;
 }
 
-export default InputCode
+const InputCode = ({ onSubmit, placeholder = 'Ej: AbC123', label = 'Código' }: InputCodeProps) => {
+  const [code, setCode] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (code.trim() && onSubmit) {
+      onSubmit(code.trim());
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 12, width: '100%' }}>
+      <label style={{ color: '#cbd5e1', fontSize: '0.95rem' }}>{label}</label>
+      <input
+        type="text"
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        placeholder={placeholder}
+        style={{
+          width: '100%',
+          padding: '12px 14px',
+          background: '#121212',
+          color: '#e6eef8',
+          border: '1px solid #262626',
+          borderRadius: 8,
+          fontSize: '1rem',
+          outline: 'none',
+        }}
+        aria-label={label}
+      />
+      <button
+        type="submit"
+        disabled={!code.trim()}
+        style={{
+          padding: '10px 12px',
+          background: code.trim() ? '#06b6d4' : '#666',
+          color: '#021',
+          border: 'none',
+          borderRadius: 8,
+          fontWeight: 600,
+          cursor: code.trim() ? 'pointer' : 'not-allowed',
+        }}
+      >
+        Buscar
+      </button>
+    </form>
+  );
+};
+
+export default InputCode;
